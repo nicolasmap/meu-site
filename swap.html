@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swap - Mini Sistema de Pagamentos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            background-color: #f2f2f2;
+            padding: 10px 0;
+        }
+        nav a {
+            margin: 0 10px;
+            color: #333;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        nav a:hover {
+            color: #555;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+        }
+        select, input[type="button"], input[type="number"] {
+            padding: 10px;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+        #swapButton {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+        #swapButton:hover {
+            background-color: #555;
+        }
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 20px;
+            border: 2px solid #333;
+            border-radius: 5px;
+            z-index: 999;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Mini Sistema de Pagamentos</h1>
+    </header>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="info.html">Info</a>
+        <a href="swap.html">Swap</a>
+    </nav>
+    <div class="container">
+        <h2>Realizar Troca de Moedas</h2>
+        <div>
+            <input type="number" id="amount" placeholder="Digite o valor a ser trocado">
+            <select id="fromCurrency">
+                <option value="USD">USD</option>
+                <option value="CHF">CHF</option>
+                <option value="EUR">EUR</option>
+            </select>
+            <span>&lt;&gt;</span>
+            <select id="toCurrency">
+                <option value="USD">USD</option>
+                <option value="CHF">CHF</option>
+                <option value="EUR">EUR</option>
+            </select>
+            <input type="button" id="swapButton" value="Swap">
+        </div>
+        <p id="conversionResult"></p>
+    </div>
+
+    <div id="popup" class="popup">
+        <p>Operação bem-sucedida</p>
+    </div>
+
+    <script>
+        document.getElementById("swapButton").addEventListener("click", function() {
+            var amount = parseFloat(document.getElementById("amount").value);
+            var fromCurrency = document.getElementById("fromCurrency").value;
+            var toCurrency = document.getElementById("toCurrency").value;
+            var conversionRate = getConversionRate(fromCurrency, toCurrency);
+            var convertedAmount = (amount * conversionRate) * 0.98; // Subtrai 2% da taxa
+            document.getElementById("conversionResult").innerText = amount + " " + fromCurrency + " <> " + convertedAmount.toFixed(2) + " " + toCurrency + "\n~" + (amount * conversionRate * 0.02).toFixed(2) + " de taxa";
+            document.getElementById("popup").style.display = "block";
+            setTimeout(function() {
+                document.getElementById("popup").style.display = "none";
+            }, 2000); // Fecha a pop-up após 2 segundos
+        });
+
+        function getConversionRate(fromCurrency, toCurrency) {
+            // Aqui você pode adicionar lógica para obter a taxa de conversão entre as moedas
+            // Por enquanto, vamos retornar um valor fixo para fins de demonstração
+            if (fromCurrency === "USD" && toCurrency === "CHF") {
+                return 0.91; // Valor fixo para USD to CHF
+            } else if (fromCurrency === "USD" && toCurrency === "EUR") {
+                return 0.82; // Valor fixo para USD to EUR
+            } else if (fromCurrency === "CHF" && toCurrency === "USD") {
+                return 1.10; // Valor fixo para CHF to USD
+            } else if (fromCurrency === "CHF" && toCurrency === "EUR") {
+                return 0.91; // Valor fixo para CHF to EUR
+            } else if (fromCurrency === "EUR" && toCurrency === "USD") {
+                return 1.22; // Valor fixo para EUR to USD
+            } else if (fromCurrency === "EUR" && toCurrency === "CHF") {
+                return 1.10; // Valor fixo para EUR to CHF
+            }
+        }
+    </script>
+</body>
+</html>
