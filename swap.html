@@ -122,7 +122,16 @@
             var toCurrency = document.getElementById("toCurrency").value;
             var conversionRate = getConversionRate(fromCurrency, toCurrency);
             var convertedAmount = (amount * conversionRate) * 0.98; // Subtrai 2% da taxa
-            document.getElementById("conversionResult").innerText = amount + " " + fromCurrency + " <> " + convertedAmount.toFixed(2) + " " + toCurrency + "\n~" + (amount * conversionRate * 0.02).toFixed(2) + " de taxa";
+            var fee = amount * conversionRate * 0.02; // Calcula a taxa
+            var newAmount = convertedAmount - fee; // Calcula o novo valor
+        
+            // Atualiza os atributos data-fee, data-to-convert-amount e data-new-amount
+            document.getElementById("swapButton").setAttribute("data-fee", fee);
+            document.getElementById("amount").setAttribute("data-to-convert-amount", amount);
+            document.getElementById("swapButton").setAttribute("data-new-amount", newAmount);
+        
+            // Exibe os resultados
+            document.getElementById("conversionResult").innerText = amount + " " + fromCurrency + " <> " + convertedAmount.toFixed(2) + " " + toCurrency + "\n~" + fee.toFixed(2) + " de taxa";
             document.getElementById("popup").style.display = "block";
             setTimeout(function() {
                 document.getElementById("popup").style.display = "none";
