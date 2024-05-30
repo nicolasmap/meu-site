@@ -142,6 +142,18 @@
             console.log(updatedFee); // Agora o valor deve ser corretamente exibido no console após clicar no botão
         });
 
+            // Envia os valores para o dataLayer do GTM
+            setTimeout(function() {
+                window.dataLayer = window.dataLayer || [];
+                window.dataLayer.push({
+                    event: 'swapCompleted',
+                    convertedAmount: convertedAmount,
+                    fee: fee,
+                    newAmount: newAmount
+                });
+            }, 250); // Aguarda 250 ms antes de enviar os dados para garantir que os cálculos foram concluídos
+        });
+
         function getConversionRate(fromCurrency, toCurrency) {
             // Aqui você pode adicionar lógica para obter a taxa de conversão entre as moedas
             // Por enquanto, vamos retornar um valor fixo para fins de demonstração
